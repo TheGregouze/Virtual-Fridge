@@ -1,2 +1,28 @@
- td:hover{background-color:#ddd;;cursor: pointer}
-            .selected{background-color: red;color: #fff;font-weight: bold}
+body{
+	color: #9932CC;
+
+}
+
+html{
+	background-image: url("IMG/path.png");
+}
+
+#userID {
+	background-color: #f4f4f4;
+	padding-bottom: 2em;
+	display: flex;
+}
+
+#formProd{
+	background-color: #f4f4f4;
+	padding-bottom: 2em;
+	padding-left: 1em;
+}
+
+#disclaimer {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  background-color: #f4f4f4
+}

@@ -1,24 +1,53 @@
 <!DOCTYPE html>
 <html>
 <head>
+	<meta charset="utf-8">
 	<title>F r i g i d a i r e  V i r t u e l</title>
 	<script type="text/javascript" src="js/scripts.js"></script>
 	<link rel="stylesheet" type="text/css" href="css/style.css">
 
 </head>
-<body onload="getProduits()">
-
+<body onload="getProduits();">
+	<button onclick="randomStyle();"></button>
 	<img src="img/fridge-splash-1.png">
 
-	<form id="formProd" onsubmit="return false;>
+	<form id="userID" onsubmit="return false;">
+		<fieldset>
+			<legend>Connectez vous a votre frigo :</legend>
+
+			<label for="username">Username</label>
+			<input type="text" name="username" required>
+
+			<label for="pswd">mot de passe*</label>
+			<input type="password" name="pswd" required>
+
+			<input type="submit" name="submitUser" onclick="userVerification(this);">
+
+		</fieldset>
+	</form>
+
+
+	<form id="formProd" onsubmit="return false;">
 		<label for="ingredients">Selectionnez</label>
 		<select id="ingredients" name="ingredients">
 			<!-- ici vont être dynamiquement ajouté a partir de la DBA la liste des ingrédients -->
 		</select>
-		<label for="quant" id="selectProd">*</label>
-		<input type="number" name="quant" min="1" step="1">
-		<input type="submit" name="submit" value="Valider :)">
+		<label for="quant" id="selectProd"></label>
+		<input type="number" name="quant" min="1" step="1" required>
+		<input type="submit" name="submit" value="Valider :)" onclick="ajouterDansFrigo(this);">
 	</form>
+
+
+	<div id=frigo>
+		Votre frigo :
+		<ul>
+			
+		</ul>
+	</div>
+
+	<div id="disclaimer">
+		*s'il vous plais, n'utilisez pas un vrai mot de passe on a prévu aucune sécuritées :)
+	</div>
 
 </body>
 </html>
