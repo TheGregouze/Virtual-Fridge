@@ -1,22 +1,20 @@
 body{
 	color: #9932CC;
-
 }
-
 html{
-	background-image: url("IMG/path.png");
+	background-image: url("../img/jath.png");
 }
 
-#userID {
-	background-color: #f4f4f4;
-	padding-bottom: 2em;
-	display: flex;
-}
-
-#formProd{
+form{
 	background-color: #f4f4f4;
 	padding-bottom: 2em;
 	padding-left: 1em;
+	display: flex;
+}
+
+table, th, td{
+	border: 1px solid black;
+	border-collapse: collapse;
 }
 
 #disclaimer {
@@ -25,4 +23,8 @@ html{
   bottom: 0;
   width: 100%;
   background-color: #f4f4f4
+}
+
+div{
+	background-color: #98FF98;
 }
