@@ -28,3 +28,6 @@ table, th, td{
 div{
 	background-color: #98FF98;
 }
+button {
+	display: flex;
+}
