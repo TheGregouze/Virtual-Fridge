@@ -71,21 +71,42 @@ CREATE SERVICE "ajouterFrigo"
     METHODS 'GET'
 AS call dba.ajouterFrigo(:produits, :quantite, :userID)
 
+------------------------------------------
+-- Procedure liam beaufils
 
+ALTER PROCEDURE "DBA"."affichageAlliments" ()
+BEGIN 
+ call sa_set_http_header('Content-Type', 'text/html');
+ call sa_set_http_header('Access-Control-Allow-Origin', '*');
+select prodLib 
+FROM DBA.tbProduits;
+END
 
+ALTER PROCEDURE "DBA"."envoieRecette" (IN numeroRecette INTEGER)
+BEGIN 
+call sa_set_http_header('Content-Type', 'text/html');
+call sa_set_http_header('Access-Control-Allow-Origin', '*');
+select prodLib
+FROM dba.tbRecettes as t1 
+JOIN dba.tbRecettesProduits as t2
+ON t1.rctID = t2.rctID
+JOIN dba.tbProduits as t3
+ON t2.prodID = t3.prodID
+WHERE t1.rctID = numeroRecette
+END
 
-
-
-
-
-
-
-
-
-
-
-
-
+ALTER PROCEDURE "DBA"."sendRecette" (IN produit VARCHAR(20))
+BEGIN
+call sa_set_http_header('Content-Type', 'text/html');
+call sa_set_http_header('Access-Control-Allow-Origin', '*');
+SELECT rctLib, t1.rctID
+FROM DBA.tbRecettes as t1
+JOIN Dba.tbRecettesProduits as t2
+ON t1.rctID = t2.rctID
+JOIN dba.tbProduits as t3
+ON t2.prodID = t3.prodID
+WHERE t3.prodLib = produit
+END
 
 
 ------------------------------
