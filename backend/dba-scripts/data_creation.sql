@@ -1,27 +1,30 @@
 INSERT INTO tbUnites values
-(001, 'portion'),
+(001, ''),
 (002, 'g'),
-(003, 'ml'),
-(004, null);
+(003, 'ml');
 
+INSERT INTO tbUsers values
+(default,'Jon', 'key'),
+(default,'user', 'pass'),
+(default,'magnus', 'chive');
   
 INSERT INTO tbProduits values
-(1,'oeuf',4),
+(1,'oeuf',1),
 (2,'farine',2),
 (3,'riz',2),
 (4,'beurre',2),
-(5,'gouse ail',4),
-(6,'fromage',4),
+(5,'gouse ail',1),
+(6,'fromage',1),
 (7,'lait',3),
 (8,'champignon',2),
 (9,'thon',2),
-(10,'peche',4),
+(10,'peche',1),
 (11,'poulet',2),
 (12,'laitue',2),
 (13,'huile vegetale',3),
 (14,'vinaigre',3),
-(15,'oignon',4),
-(16, 'banane',4);
+(15,'oignon',1),
+(16, 'banane',1);
 
 INSERT INTO tbRecettes values
 (1,'Risotto Champignon'),
