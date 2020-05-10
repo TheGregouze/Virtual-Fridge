@@ -6,3 +6,11 @@ BEGIN
     FROM tbProduits 
     NATURAL JOIN tbUnites
 END
+
+CREATE SERVICE "getProduits"
+    TYPE 'JSON'
+    AUTHORIZATION OFF
+    USER "DBA"
+    URL ON
+    METHODS 'GET'
+AS call dba.getProduits();
