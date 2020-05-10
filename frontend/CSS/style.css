@@ -1,26 +1,46 @@
 body{
-	color: #9932CC;
+	color: #660066;
 	text-align: center;
+	font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif	
+;
+}
 
+button{
+	margin:1em;
+	padding: 4px;
+	background-color: #d896ff;
+  	border: none;
+ 	padding: 8px 8px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
 }
+
 html{
-	background-image: url("../img/jath.png");
-}
+	background-image: url("../img/bg.jpg");
+	background-repeat: no-repeat;
+  	background-size: cover;
+}	
 
 form{
-	background-color: #f4f4f4;
+	background-color: #efbbff;
 	padding : 1em;
 }
-#frigo{
-	padding-bottom : 1em;
-}
+
+
 table, th, td{
 	border: 1px solid black;
 	border-collapse: collapse;
+
 }
 
 #main{
 	display: none;
+	border:3px solid black;
+	background-color: #d896ff;
 }
 
 #formprod{
@@ -37,11 +57,11 @@ table, th, td{
   left: 0;
   bottom: 0;
   width: 100%;
-  background-color: #f4f4f4
+  background-color: #efbbff;
 }
 
-div{
-	background-color: #98FF98;
+{
+	
 }
 
 button {

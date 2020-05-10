@@ -9,10 +9,8 @@
 </head>
 
 <body> <!--onload="getProduits();"-->
-	<button onclick="randomStyle();"></button>
 	<img src="img/fridge-splash-1.png">
 	<br>
-	
 
 	<form id="userID" onsubmit="return false;">
 		<fieldset>
@@ -21,7 +19,7 @@
 			<label for="username">Username</label>
 			<input type="text" name="username" required>
 
-			<label for="pswd">mot de passe*</label>
+			<label for="pswd">Mot de passe</label>
 			<input type="password" name="pswd" required>
 
 			<input type="submit" name="sub" value="Login" id="userIDSubmit"> 
@@ -35,34 +33,23 @@
 			<!-- ici vont être dynamiquement ajouté a partir de la DBA la liste des ingrédients -->
 		</select>
 		<label for="quant" id="selectProd"></label>
-		<input type="number" name="quant" min="1" step="1" required>
+		<input type="number" name="quant" min="1" step="1" placeholder="quantitée" required>
 		<input type="submit" name="submit" id="prodSubmit" value="Valider :)">
 	</form>
-
-
+<br>
 	<div>
 		<button id=reset>Reset</button>
 		<table id=frigo>
-			<tr>
-				<thead><strong>Votre frigo :</strong></thead>
-			</tr>
-			<tr>
-				<th>Produit</th>
-				<th>Quantité</th>
-				<th></th>
-			</tr>
+
 		</table>
 	</div>
+	<br>
 	<div>
 		<table id="tableRecettes">
-    		<thead>
-    		<tr><th>Recettes</th><th>Produits</th><th>Quantité</th></tr>
-   			</thead>
-   			<tbody>
-
-    		</tbody>
+    		
 		</table>
 	</div>
+	<br>
 	<div>
 		<form id="ajoutProdForm" onsubmit= "return false;">
 			<legend>Ajouter un produit:</legend>
