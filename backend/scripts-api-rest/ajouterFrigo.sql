@@ -1,4 +1,4 @@
-ALTER PROCEDURE "DBA"."ajouterFrigo"(@produits int, @quantite int, @userID int)
+CREATE PROCEDURE "DBA"."ajouterFrigo"(@produits int, @quantite int, @userID int)
 --Sebaztyan Schampaert
 BEGIN
     declare quant int;
