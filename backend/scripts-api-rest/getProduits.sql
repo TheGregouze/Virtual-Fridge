@@ -1,4 +1,4 @@
-ALTER PROCEDURE "DBA"."getProduits"()
+CREATE PROCEDURE "DBA"."getProduits"()
 RESULT (id int, lib varchar(20), libUnit varchar(10))
 BEGIN
     call sa_set_http_header('Content-Type','application:json; charset=utf-8');
