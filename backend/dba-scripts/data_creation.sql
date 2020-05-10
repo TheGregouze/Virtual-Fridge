@@ -14,7 +14,7 @@ INSERT INTO tbProduits values
 (3,'riz',2),
 (4,'beurre',2),
 (5,'gouse ail',1),
-(6,'fromage',1),
+(6,'fromage',2),
 (7,'lait',3),
 (8,'champignon',2),
 (9,'thon',2),
