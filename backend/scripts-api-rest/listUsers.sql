@@ -1,4 +1,4 @@
-ALTER PROCEDURE "DBA"."listUsers"()
+CREATE PROCEDURE "DBA"."listUsers"()
 RESULT (username char(30), pswd char(30))
 BEGIN
     call sa_set_http_header('Content-Type','application:json; charset=utf-8');
