@@ -43,4 +43,6 @@ Insère un nouveau "produit" et son unité de mesure dans la table des produits,
 Pas d’input et de paramètres. RESULT id int, lib varchar(20), libUnit varchar(10) après avoir été les chercher dans tbProduits et les affiches au client en JSON.
 <h3>getUserId :</h3>
 INPUT @username varchar(30). Renvoie l’ID de l’utilisateur correspondant pour accéder à son propre frigo, RETURN userID int.
+<h3>listUsers :</h3>
+Pas d’input et de paramètres. RESULT (username char(30), pswd char(30)). Selectionne usrName, usrKey dans le tableau tbUsers puis renvoie les renvoient au client en JSON.
 
