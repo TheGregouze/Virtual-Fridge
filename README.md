@@ -37,5 +37,5 @@ Le site propose un systeme de login/register simpliste qui permet de sauvegarder
 <h2>Webservices</h2>
 <br>
 <h3>ajouterProduit :</h3>
-INPUT produit VARCHAR(30) unit VARCHAR(30)
+INPUT produit VARCHAR(30), unite VARCHAR(30)
 Insère un nouveau "produit" et son unité de mesure dans la table des produits, son ID est automatiquement incrementé, ne renvoie rien.
