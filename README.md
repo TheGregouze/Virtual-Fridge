@@ -47,3 +47,5 @@ INPUT @username varchar(30). Renvoie l’ID de l’utilisateur correspondant pou
 Pas d’input et de paramètres. RESULT (username char(30), pswd char(30)). Selectionne usrName, usrKey dans le tableau tbUsers puis renvoie les renvoient au client en JSON.
 <h3>recupererFrigo :</h3>
 INPUT @userID int. RESULT lib varchar(16), quant int, libUnit varchar(10). Selectionne prodLib, prodQuant, unitLib dans le tbFrigo et les renvoie au client en JSON.
+<h3>register :</h3>
+INPUT @username varchar(30), @password varchar(30). RESULT userID int. Insere un nouveau « nom d’utilisateur » et un mot de passe joint à lui dans le tbUsers. Son ID est automatiquement incrementé.
