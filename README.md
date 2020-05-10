@@ -26,12 +26,12 @@ Le site propose un systeme de login/register simpliste qui permet de sauvegarder
 <h2>Tables</h2>
 <img src="frontend/IMG/tables.png">
 <ul>
-	<li><strong>tbRecettes: </strong>Contient un identifiant et un libellé pour les recettes</li>
-	<li><strong>tbProduits: </strong>Contient une liste des produits, avec un lien vers la table des unitées</li>
-	<li><strong>tbRecettesProduits: </strong>Lien entre les recettes et les produits, ainsi que la quantité, en fonction de leur unité, necessaire</li>
-	<li><strong>tbUsers: </strong>Contient les identifiant, noms et mots de passe</li>
-	<li><strong>tbFrigo: </strong>Met en lien le User avec les produits qu'il possède, ainsi que leur quantité</li>
-	<li><strong>tbUnites: </strong>Table des unitées, necessaire pour clairement donner les informations necessaire</li>
+	<li><strong>tbRecettes: </strong>Contient un identifiant, qui sert de Primary Key, et un libellé pour les recettes. </li>
+	<li><strong>tbProduits: </strong>Contient une liste des produits, de leurs identifiants qui servent de Primary Key, et des identifiants des unités qui, en tant que Foreign Key, permettent le lien vers la table des unités.</li>
+	<li><strong>tbRecettesProduits: </strong>Lien entre les recettes et les produits via les identifiants recettes et les identifiants produits qui servent de Primary Key ET de Foreign Key, ainsi que la quantité, en fonction de leur unité, nécessaire.</li>
+	<li><strong>tbUsers: </strong>Contient les identifiant servant de Primary Key, les noms et les mots de passe.</li>
+	<li><strong>tbFrigo: </strong>Met en lien le User avec les produits qu'il possède via leurs identifiants qui servent de Primary Key ET de Foreign Key, ainsi que leur quantité.</li>
+	<li><strong>tbUnites: </strong>Table des unités, nécessaire pour clairement donner les informations nécessaire. Comme leur ID qui servent de Primary Key, ainsi que leur libellé.</li>
 </ul>
 <br>
 <h2>Webservices</h2>
