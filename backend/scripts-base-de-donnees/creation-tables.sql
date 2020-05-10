@@ -18,12 +18,13 @@ CONSTRAINT pkRct PRIMARY KEY(rctID),
 );
 
 CREATE TABLE tbProduits(
-prodID int NOT NULL,
+prodID int NOT NULL DEFAULT AUTOINCREMENT,
 prodLib varchar(30) NOT NULL,
 unitID int NOT NULL,
 CONSTRAINT pkProd PRIMARY KEY(prodID),
 CONSTRAINT fkProdUnit FOREIGN KEY(unitID) REFERENCES tbUnites(unitID) on delete restrict,
 );
+
 
 CREATE TABLE tbRecettesProduits(
 rctID int NOT NULL,
