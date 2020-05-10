@@ -2,10 +2,13 @@
 let userID; //sert a verifier si l'utilisateur est connecté, et permet de stocker les produits dans le "frigo" correct
 let prodList; //liste des denrees reconnues par le systeme
 let userList; //stock de manière globale les ID, pseudos et mots de passes des users
+let unitList;//liste des unitees
+let recetteList;//
+let frigoList;
 
 //masque la selection des produit avant connexion, et le formulaire du login après connexion
 function displayFormProd(){
-	document.getElementById("formProd").style.display = "flex";
+	document.getElementById("main").style.display = "inline-block";
 	document.getElementById("userID").style.display = "none";
 }
 
@@ -14,19 +17,19 @@ function getProduits(){
 
 	xhr.open('get', "getProduits", true); // préparer
 	xhr.onload = // callback : fonction anonyme
-		function(){ makeSelect( JSON.parse(xhr.responseText), "produits");		 
+
+		function(){ prodList = JSON.parse(xhr.responseText);makeSelect();		 
 	}
 	xhr.send(); // envoyer
 }
 
-function makeSelect(prod, id){ // faire une liste déroulante des produits
-	prodList = prod; //permet d'acceder globalement a la liste 
+function makeSelect(){ // faire une liste déroulante des produits
 	let liste = '<select>';
-	for(let i in prod){
-		liste += '<option value=' + prod[i].id + '>' + prod[i].lib + '</option>';
+	for(let i in prodList){
+		liste += '<option value=' + prodList[i].id + '>' + prodList[i].lib + '</option>';
 	}
 	liste += '</select>';
-	document.getElementById(id).innerHTML += liste;
+	document.getElementById("produits").innerHTML += liste;
 }
 
 
@@ -36,13 +39,18 @@ window.onload = function(){
 	let userSub = document.getElementById("userIDSubmit");
 	let prodSub = document.getElementById("prodSubmit");
 	let reset = document.getElementById("reset");
+	let ajoutProd = document.getElementById("ajoutProduitBouton");
 
 	loginChange.addEventListener('click', changeLogin);
 	userSub.addEventListener('click', userSubHandler);
 	prodSub.addEventListener('click', ajouterFrigo);
 	reset.addEventListener('click', resetFrigo);
+	ajoutProd.addEventListener('click', ajouterProduit);
 	
+	userListRequest();
 	getProduits();
+	recupererUnite();
+	
 }
 
 function suppressionLigne(){
@@ -94,27 +102,30 @@ function userListRequest(){ //recuperation de la liste des IDS , psuedos et mot 
 	xhr.send();
 }
 
-function userIndex(name){//retourne -1 si l'utilisateur n'existe pas, et le position dans le tableau userList si oui
-	let i = 0;
-	let userIndex = -1; 
-	for(i in userList){
+function userExiste(name){//retourne faux si l'utilisateur n'existe pas, vrai sinon
+
+	for(let i in userList){
+		console.log(userList[i].username);
 		if(userList[i].username == name){
-			userIndex = i;
+			return true;
 		}
 	}
-	return userIndex; 
+	return false;
 }
 
 function userLogin(name, password){
-	
-	let uIndex = userIndex(name);
-
-	if (uIndex >= 0){
+	if (userExiste(name)){
+		let uIndex;
+		for (let i in userList){
+			if(userList[i].username == name){
+				uIndex = i;
+			}
+		}
 		if(userList[uIndex].pswd == password){//test si le mot de passe est valide	
 			console.log("Connection!");
 			getUserID(name);
 			displayFormProd();
-			setTimeout(function(){recupererFrigo();},500);//idem que le precedent
+			setTimeout(function(){recupererFrigo();recupererRecettes();},500);//idem que le precedent
 		}else{
 			console.log("Mauvais mot de passe");
 		}
@@ -132,10 +143,7 @@ function getUserID(name){
 }
 
 function userRegister(name, password){
-	let uIndex = userIndex(name);
-
-	if (uIndex == -1){//si le nom est libre
-		console.log('nouv ercreat');
+	if (!userExiste(name)){//si le nom est libre
 		let xhr = new XMLHttpRequest();
 		let url = 'register?username=' + name + '&password=' + password;
 
@@ -161,13 +169,14 @@ function recupererFrigo(){
 }
 
 function construireTableFrigo(xhr){
-	let frigo;
-	frigo = JSON.parse(xhr.responseText);
-	let tableFrigo;
-	console.log(frigo);
-	for(let i in frigo){
-		tableFrigo = "<tr><td>" + frigo[i].lib + "</td><td>" + frigo[i].quant + "</td><td>" + frigo[i].libUnit + "</td></tr>";
+	frigoList = JSON.parse(xhr.responseText);
+	let tableFrigo = "";
+	console.log(frigoList);
+	for(let i in frigoList){
+		tableFrigo += "<tr><td>" + frigoList[i].lib + "</td><td>" + frigoList[i].quant + "</td><td>" + frigoList[i].libUnit + "</td></tr>";
 	}
+
+	document.getElementById('frigo').innerHTML = "<tr><thead><strong>Votre frigo :</strong></thead></tr><tr><th>Produit</th><th>Quantité</th><th></th></tr>"
 	document.getElementById('frigo').innerHTML += tableFrigo;
 }
 
@@ -181,18 +190,115 @@ function ajouterFrigo(){
 		xhr.open('get', url, true); // préparer
 		xhr.onload = function(){};
 		xhr.send(); // envoyer
-	
-	let selection;
-	for(let i in prodList){
-		if (prodList[i].id == form.produits.value)
-			selection = prodList[i];
-	}
-
-	let ajout = "<tr><td>" + selection.lib + "</td><td>" + form.quant.value + "</td><td>" + selection.libUnit + "</td></tr>";
-	document.getElementById("frigo").innerHTML += ajout;
+		setTimeout(function(){recupererFrigo();},500);
 
     }
 }
+
+function ajouterProduit(){ //ajouter produit
+	let produit = document.getElementById('ajoutProdForm').nouveauProduit.value;
+	let uniteLib = document.getElementById('ajoutProdForm').unite.value;
+	let unite;
+	let existeDeja = false;
+	for (let i in unitList) {
+		if(unitList[i].unitLib == uniteLib){
+			unite = unitList[i].unitID;
+		}
+	}
+	for (let i in prodList){
+		if (prodList[i].lib== produit) {
+			existeDeja = true;
+		}
+	}
+	if (produit && !existeDeja){
+		let url = "ajouterProduit?produit=" + produit+ "&unite=" + unite;
+    	let xhr = new XMLHttpRequest();
+   		
+   	 	xhr.open('get', url, true);
+    	xhr.onload = function(){
+        	getProduits();
+        	makeSelect()
+        };
+
+    	xhr.send();
+    }else{
+    	console.log('produit deja existant');
+    }
+
+
+}
+
+function recupererUnite(){
+	let xhr = new XMLHttpRequest();
+
+    xhr.open('get','recupererUnite',true);
+    xhr.onload = construireSelectUnite;
+    xhr.send();
+}
+
+function construireSelectUnite(){
+	unitList = JSON.parse(this.responseText);
+	let liste='';
+	for (let i of unitList) {
+         liste += "<option value='"+i.unitLib+"'>"+ i.unitLib +"</option>";
+    }
+	document.getElementById('unite').innerHTML = liste;
+}
 	
 
+function recupererRecettes(){
+	let xhr = new XMLHttpRequest();
+    xhr.open('get','recupererRecette',true);
+    xhr.onload = function(){recetteList = JSON.parse(this.responseText);};
+    xhr.send();
 
+    setTimeout(function(){analyseRecettes();}, 1000);
+}
+
+function analyseRecettes(){
+	let recetteArrayCount = [];
+	let recetteArray = []
+	let changeRec = "";
+	let recettesValides = "";
+
+	for (let i in recetteList){
+		if(recetteList[i].rctLib != changeRec){
+			changeRec = recetteList[i].rctLib;
+			recetteArray.push(changeRec);
+			recetteArrayCount.push(0);
+		}
+	}
+
+	for (let i in recetteList){
+		for (let j in frigoList){
+			if(frigoList[j].lib == recetteList[i].prodLib){
+				for (let k in recetteArray){
+					if(recetteList[i].rctLib == recetteArray[k]){
+						recetteArrayCount[k]++;
+					}
+				}
+			}
+		}
+	}
+	console.log(recetteArray + recetteArrayCount);
+	for (let l = 0; l < recetteArrayCount.length; l++){
+		if (recetteArrayCount[l] > 0){
+			console.log(recetteArray[l]);
+			recettesValides += "<tr><td>" +  recetteArray[l] + "</td><td>" + elementsDeRecetteValide(recetteArray[l], "prodLib") + "</td><td>" + elementsDeRecetteValide(recetteArray[l], "prodQuant") + "</td></tr>"//
+		}
+	}
+	console.log(recettesValides);
+	document.getElementById('tableRecettes').innerHTML += recettesValides;
+}
+
+function elementsDeRecetteValide(recette, colonne){
+	let produits = "";
+
+	for (let i in recetteList){
+		if(recette == recetteList[i].rctLib){
+			produits += recetteList[i][colonne] + ', ';
+		}
+	}
+	console.log(produits);
+	return produits;
+}

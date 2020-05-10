@@ -18,7 +18,6 @@
 		<fieldset>
 			<legend><button id=loginRegister>Login / Register</button></legend>
 
-
 			<label for="username">Username</label>
 			<input type="text" name="username" required>
 
@@ -29,7 +28,7 @@
 		</fieldset>
 	</form>
 
-
+<div id="main">
 	<form id="formProd" onsubmit="return false;">
 		<label for="produits">Selectionnez</label>
 		<select id="produits" name="produits">
@@ -52,18 +51,29 @@
 				<th>Quantité</th>
 				<th></th>
 			</tr>
-
 		</table>
 	</div>
+	<div>
+		<table id="tableRecettes">
+    		<thead>
+    		<tr><th>Recettes</th><th>Produits</th><th>Quantité</th></tr>
+   			</thead>
+   			<tbody>
 
-	<table id="tableRecettes">
-    	<thead>
-    	<tr><th>Recettes</th><th>Produits</th><th>Quantité</th></tr>
-   		</thead>
-   		<tbody id="affichePossible">
-    	</tbody>
-	</table>
+    		</tbody>
+		</table>
+	</div>
+	<div>
+		<form id="ajoutProdForm" onsubmit= "return false;">
+			<legend>Ajouter un produit:</legend>
+			<input type="text" name='nouveauProduit' placeholder="Nom du produit ?" required>
+			<select name="unite" id="unite">
 
+			</select>
+			<button type="submit" id="ajoutProduitBouton">Enregistrer le produit</button>
+		</form>
+	</div>
+</div>
 	<div id="disclaimer">
 		*s'il vous plais, n'utilisez pas un vrai mot de passe on a prévu aucune sécuritées :)
 	</div>

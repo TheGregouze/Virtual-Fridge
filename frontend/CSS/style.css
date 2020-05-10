@@ -1,5 +1,7 @@
 body{
 	color: #9932CC;
+	text-align: center;
+
 }
 html{
 	background-image: url("../img/jath.png");
@@ -7,24 +9,27 @@ html{
 
 form{
 	background-color: #f4f4f4;
-	padding-bottom: 2em;
-	padding-left: 1em;
+	padding : 1em;
 }
-
+#frigo{
+	padding-bottom : 1em;
+}
 table, th, td{
 	border: 1px solid black;
 	border-collapse: collapse;
 }
 
-#formProd{
+#main{
 	display: none;
+}
+
+#formprod{
 	padding: 1em;
 }
 
 #tableRecettes{
 
 	width: auto;
-    float: right;
 
 }
 #disclaimer {
@@ -38,6 +43,7 @@ table, th, td{
 div{
 	background-color: #98FF98;
 }
+
 button {
 	display: flex;
 }
