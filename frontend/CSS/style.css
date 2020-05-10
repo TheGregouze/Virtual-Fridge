@@ -9,7 +9,6 @@ form{
 	background-color: #f4f4f4;
 	padding-bottom: 2em;
 	padding-left: 1em;
-	display: flex;
 }
 
 table, th, td{
@@ -17,6 +16,17 @@ table, th, td{
 	border-collapse: collapse;
 }
 
+#formProd{
+	display: none;
+	padding: 1em;
+}
+
+#tableRecettes{
+
+	width: auto;
+    float: right;
+
+}
 #disclaimer {
   position: fixed;
   left: 0;

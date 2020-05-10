@@ -3,10 +3,14 @@ let userID; //sert a verifier si l'utilisateur est connecté, et permet de stock
 let prodList; //liste des denrees reconnues par le systeme
 let userList; //stock de manière globale les ID, pseudos et mots de passes des users
 
-
+//masque la selection des produit avant connexion, et le formulaire du login après connexion
+function displayFormProd(){
+	document.getElementById("formProd").style.display = "flex";
+	document.getElementById("userID").style.display = "none";
+}
 
 function getProduits(){
-	var xhr = new XMLHttpRequest(); // instancier XMLHttpRequest
+	let xhr = new XMLHttpRequest(); // instancier XMLHttpRequest
 
 	xhr.open('get', "getProduits", true); // préparer
 	xhr.onload = // callback : fonction anonyme
@@ -31,14 +35,12 @@ window.onload = function(){
 	let loginChange = document.getElementById("loginRegister");
 	let userSub = document.getElementById("userIDSubmit");
 	let prodSub = document.getElementById("prodSubmit");
-	let suprLigne = document.getElementById("suppressionLigne");
 	let reset = document.getElementById("reset");
 
 	loginChange.addEventListener('click', changeLogin);
 	userSub.addEventListener('click', userSubHandler);
 	prodSub.addEventListener('click', ajouterFrigo);
-	suprLigne.addEventListener('click', suppressionLigne);
-	reset.addEventListener('click', resetTable);
+	reset.addEventListener('click', resetFrigo);
 	
 	getProduits();
 }
@@ -46,15 +48,14 @@ window.onload = function(){
 function suppressionLigne(){
 	document.getElementById("frigo").deleteRow(-1);
 }
-function resetTable(){
-	document.getElementById("frigo").innerHTML = "<tr><th>Produit</th><th>Quantité</th></tr>";
-}
-function randomStyle(){
-	let num = Math.ceil(Math.random()*3);
-	let string = "url(\"img/cube" + num + ".png\")";
-	document.getElementsByTagName("html")[0].style.backgroundImage = string;
-}
 
+function resetFrigo(){
+	document.getElementById("frigo").innerHTML = "<tr><th>Produit</th><th>Quantité</th></tr>";
+	let url = 'resetFrigo?userID=' + userID;
+	let xhr = new XMLHttpRequest();
+	xhr.open('get', url, true);
+	xhr.send();
+}
 
 //permet d'avoir une distinction entre une tentative de création de compte et d'une connexion a un compte
 function changeLogin(){
@@ -73,12 +74,11 @@ function userSubHandler(){
 
 	if(form.username.value && form.pswd.value){//si les deux champs ne sont pas remplis, rien ne se passe du coté JS, la page affiche que les champs sont requis
 		userListRequest();
-		console.log('1');
 		if (form.sub.value == "Login"){
-			console.log("test login");
-			userLogin(form.username.value, form.pswd.value);
+			//console.log("test login");
+			setTimeout(function(){userLogin(form.username.value, form.pswd.value);}, 500);//necessaire car sinon la requete est plus lente que la tentative de recuperation des donnes
 		}else if(form.sub.value == "Register"){
-			console.log("test Register");
+			//console.log("test Register");
 			userRegister(form.username.value, form.pswd.value);
 		}
 	}
@@ -106,12 +106,15 @@ function userIndex(name){//retourne -1 si l'utilisateur n'existe pas, et le posi
 }
 
 function userLogin(name, password){
+	
 	let uIndex = userIndex(name);
 
 	if (uIndex >= 0){
 		if(userList[uIndex].pswd == password){//test si le mot de passe est valide	
 			console.log("Connection!");
 			getUserID(name);
+			displayFormProd();
+			setTimeout(function(){recupererFrigo();},500);//idem que le precedent
 		}else{
 			console.log("Mauvais mot de passe");
 		}
@@ -139,6 +142,7 @@ function userRegister(name, password){
 		xhr.open('get', url, true);
 		xhr.onload = function(){
 			userID = xhr.responseText;
+			displayFormProd();
 		}
 		xhr.send();
 	}else{
@@ -147,27 +151,47 @@ function userRegister(name, password){
 	userListRequest();
 }
 
+function recupererFrigo(){
+	let xhr = new XMLHttpRequest();
+	let url = 'recupererFrigo?userID=' + userID;
+
+	xhr.open("get", url, true);
+	xhr.onload = function(){construireTableFrigo(xhr)};
+	xhr.send();
+}
+
+function construireTableFrigo(xhr){
+	let frigo;
+	frigo = JSON.parse(xhr.responseText);
+	let tableFrigo;
+	console.log(frigo);
+	for(let i in frigo){
+		tableFrigo = "<tr><td>" + frigo[i].lib + "</td><td>" + frigo[i].quant + "</td><td>" + frigo[i].libUnit + "</td></tr>";
+	}
+	document.getElementById('frigo').innerHTML += tableFrigo;
+}
 
 function ajouterFrigo(){
-
 	let form = document.getElementById("formProd");
 
 	if (form.quant.value && form.produits.value){
 		let url = "ajouterFrigo?produits=" + form.produits.value + "&quantite=" + form.quant.value + "&userID=" + userID;
-		//console.log(url);
+		//formation de l'url a partir du produit, sa quantite, et le user ID
 		let xhr = new XMLHttpRequest(); // instancier XMLHttpRequest
 		xhr.open('get', url, true); // préparer
 		xhr.onload = function(){};
 		xhr.send(); // envoyer
-	}
+	
 	let selection;
 	for(let i in prodList){
 		if (prodList[i].id == form.produits.value)
-			selection = prodList[i].lib;
+			selection = prodList[i];
 	}
 
-	let ajout = "<tr><td>" + selection + "</td><td>" + form.quant.value + "</td></tr>";
+	let ajout = "<tr><td>" + selection.lib + "</td><td>" + form.quant.value + "</td><td>" + selection.libUnit + "</td></tr>";
 	document.getElementById("frigo").innerHTML += ajout;
+
+    }
 }
 	
 

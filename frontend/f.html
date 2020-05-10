@@ -12,11 +12,12 @@
 	<button onclick="randomStyle();"></button>
 	<img src="img/fridge-splash-1.png">
 	<br>
-	<button id=loginRegister>Login / Register</button>
+	
 
 	<form id="userID" onsubmit="return false;">
 		<fieldset>
-			<legend>Connectez vous a votre frigo :</legend>
+			<legend><button id=loginRegister>Login / Register</button></legend>
+
 
 			<label for="username">Username</label>
 			<input type="text" name="username" required>
@@ -24,8 +25,7 @@
 			<label for="pswd">mot de passe*</label>
 			<input type="password" name="pswd" required>
 
-			<input type="submit" name="sub" value="Login" id="userIDSubmit"> <!--onclick="userVerification(this);""-->
-
+			<input type="submit" name="sub" value="Login" id="userIDSubmit"> 
 		</fieldset>
 	</form>
 
@@ -42,9 +42,7 @@
 
 
 	<div>
-		<button id=suppressionLigne>X</button>
 		<button id=reset>Reset</button>
-		
 		<table id=frigo>
 			<tr>
 				<thead><strong>Votre frigo :</strong></thead>
@@ -52,23 +50,25 @@
 			<tr>
 				<th>Produit</th>
 				<th>Quantité</th>
+				<th></th>
 			</tr>
+
 		</table>
 	</div>
+
+	<table id="tableRecettes">
+    	<thead>
+    	<tr><th>Recettes</th><th>Produits</th><th>Quantité</th></tr>
+   		</thead>
+   		<tbody id="affichePossible">
+    	</tbody>
+	</table>
 
 	<div id="disclaimer">
 		*s'il vous plais, n'utilisez pas un vrai mot de passe on a prévu aucune sécuritées :)
 	</div>
-	
-<table>
-    <thead>
-    <tr><th>Recettes</th><th>Produits</th></tr>
-    </thead>
-    <tbody id="affichePossible">
-
-    </tbody>
-</table>
-
 
 </body>
 </html>
+
+
