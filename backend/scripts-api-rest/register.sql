@@ -1,4 +1,4 @@
-ALTER PROCEDURE "DBA"."register" (@username varchar(30), @password varchar(30))
+CREATE PROCEDURE "DBA"."register" (@username varchar(30), @password varchar(30))
 RESULT (userID int)
 BEGIN
     call sa_set_http_header( 'Content-Type', 'text/html' );
