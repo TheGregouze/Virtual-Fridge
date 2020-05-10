@@ -39,3 +39,5 @@ Le site propose un systeme de login/register simpliste qui permet de sauvegarder
 <h3>ajouterProduit :</h3>
 INPUT produit VARCHAR(30), unite VARCHAR(30)
 Insère un nouveau "produit" et son unité de mesure dans la table des produits, son ID est automatiquement incrementé, ne renvoie rien.
+<h3>getProduit :</h3>
+Pas d’input et de paramètres. RESULT id int, lib varchar(20), libUnit varchar(10) après avoir été les chercher dans tbProduits et les affiches au client en JSON.
