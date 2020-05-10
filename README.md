@@ -51,3 +51,5 @@ INPUT @userID int. RESULT lib varchar(16), quant int, libUnit varchar(10). Selec
 INPUT @username varchar(30), @password varchar(30). RESULT userID int. Insere un nouveau « nom d’utilisateur » et un mot de passe joint à lui dans le tbUsers. Son ID est automatiquement incrementé.
 <h3>resetFrigo :</h3>
 INPUT @userID int. Supprime les données du frigo du user par un DELETE FROM tbFrigo. Ne renvoie rien.
+<h3>ajouterFrigo :</h3>
+INPUT @produits int, @quantite int, @userID int. Ajoute une colonne à la table des frigos et la met à jour si elle existe déjà au moyen d’un UPDATE. Contient un conditionnel et fait appel à la fonction testFrigo.  Ne renvoie rien.
