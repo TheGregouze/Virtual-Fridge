@@ -41,3 +41,6 @@ INPUT produit VARCHAR(30), unite VARCHAR(30)
 Insère un nouveau "produit" et son unité de mesure dans la table des produits, son ID est automatiquement incrementé, ne renvoie rien.
 <h3>getProduit :</h3>
 Pas d’input et de paramètres. RESULT id int, lib varchar(20), libUnit varchar(10) après avoir été les chercher dans tbProduits et les affiches au client en JSON.
+<h3>getUserId :</h3>
+INPUT @username varchar(30). Renvoie l’ID de l’utilisateur correspondant pour accéder à son propre frigo, RETURN userID int.
+
