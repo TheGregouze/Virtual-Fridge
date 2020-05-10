@@ -6,33 +6,6 @@ let unitList;//liste des unitees
 let recetteList;//
 let frigoList;
 
-//masque la selection des produit avant connexion, et le formulaire du login après connexion
-function displayFormProd(){
-	document.getElementById("main").style.display = "inline-block";
-	document.getElementById("userID").style.display = "none";
-}
-
-function getProduits(){
-	let xhr = new XMLHttpRequest(); // instancier XMLHttpRequest
-
-	xhr.open('get', "getProduits", true); // préparer
-	xhr.onload = // callback : fonction anonyme
-
-		function(){ prodList = JSON.parse(xhr.responseText);makeSelect();		 
-	}
-	xhr.send(); // envoyer
-}
-
-function makeSelect(){ // faire une liste déroulante des produits
-	let liste = '<select>';
-	for(let i in prodList){
-		liste += '<option value=' + prodList[i].id + '>' + prodList[i].lib + '</option>';
-	}
-	liste += '</select>';
-	document.getElementById("produits").innerHTML += liste;
-}
-
-
 //s'occupe de lancer les eventListeners et fonctions a lancer lors du chargerment
 window.onload = function(){
 	let loginChange = document.getElementById("loginRegister");
@@ -50,11 +23,31 @@ window.onload = function(){
 	userListRequest();
 	getProduits();
 	recupererUnite();
-	
 }
 
-function suppressionLigne(){
-	document.getElementById("frigo").deleteRow(-1);
+//masque la selection des produit avant connexion, et le formulaire du login après connexion
+function displayFormProd(){
+	document.getElementById("main").style.display = "inline-block";
+	document.getElementById("userID").style.display = "none";
+}
+
+function getProduits(){
+	let xhr = new XMLHttpRequest(); // instancier XMLHttpRequest
+
+	xhr.open('get', "getProduits", true); // préparer
+	xhr.onload = // callback : fonction anonyme
+		function(){ prodList = JSON.parse(xhr.responseText);makeSelect();		 
+	}
+	xhr.send(); // envoyer
+}
+
+function makeSelect(){ // faire une liste déroulante des produits
+	let liste = '<select>';
+	for(let i in prodList){
+		liste += '<option value=' + prodList[i].id + '>' + prodList[i].lib + '</option>';
+	}
+	liste += '</select>';
+	document.getElementById("produits").innerHTML += liste;
 }
 
 function resetFrigo(){
@@ -78,7 +71,6 @@ function changeLogin(){
 
 //dirige les infos vers la fonction adéquate
 function userSubHandler(){
-
 	let form = document.getElementById("userID");
 
 	if(form.username.value && form.pswd.value){//si les deux champs ne sont pas remplis, rien ne se passe du coté JS, la page affiche que les champs sont requis
@@ -104,7 +96,6 @@ function userListRequest(){ //recuperation de la liste des IDS , psuedos et mot 
 }
 
 function userExiste(name){//retourne faux si l'utilisateur n'existe pas, vrai sinon
-
 	for(let i in userList){
 		//console.log(userList[i].username);
 		if(userList[i].username == name){
@@ -184,15 +175,14 @@ function construireTableFrigo(xhr){
 function ajouterFrigo(){
 	let form = document.getElementById("formProd");
 
-	if (form.quant.value && form.produits.value){
+	if (form.quant.value && form.produits.value){ //verifie que les champs ne sont pas vides
 		let url = "ajouterFrigo?produits=" + form.produits.value + "&quantite=" + form.quant.value + "&userID=" + userID;
 		//formation de l'url a partir du produit, sa quantite, et le user ID
-		let xhr = new XMLHttpRequest(); // instancier XMLHttpRequest
-		xhr.open('get', url, true); // préparer
+		let xhr = new XMLHttpRequest(); 
+		xhr.open('get', url, true); 
 		xhr.onload = function(){};
-		xhr.send(); // envoyer
+		xhr.send(); 
 		setTimeout(function(){recupererFrigo();recupererRecettes();},100);
-
     }
 }
 
@@ -215,35 +205,33 @@ function ajouterProduit(){
 
 	if (produit && !existeDeja){//s'assure que le champ n'est pas vide et que un tel produit n'exist pas deja
 		let url = "ajouterProduit?produit=" + produit+ "&unite=" + unite;
-    	let xhr = new XMLHttpRequest();
+    		let xhr = new XMLHttpRequest();
    		
    	 	xhr.open('get', url, true);
-    	xhr.onload = function(){
+    		xhr.onload = function(){
         	getProduits();
         	makeSelect()
-        };
-    	xhr.send();
-    }else{
-    	console.log('produit deja existant');
+       	 	};
+    		xhr.send();
+    	}else{
+    		console.log('produit deja existant');
     }
-
-
 }
 
 function recupererUnite(){
 	let xhr = new XMLHttpRequest();
 
-    xhr.open('get','recupererUnite',true);
-    xhr.onload = construireSelectUnite;
-    xhr.send();
+    	xhr.open('get','recupererUnite',true);
+    	xhr.onload = construireSelectUnite;
+    	xhr.send();
 }
 
 function construireSelectUnite(){
 	unitList = JSON.parse(this.responseText);
 	let liste='';
 	for (let i of unitList) {
-         liste += "<option value='"+i.unitLib+"'>"+ i.unitLib +"</option>";
-    }
+        	liste += "<option value='"+i.unitLib+"'>"+ i.unitLib +"</option>";
+    	}
 	document.getElementById('unite').innerHTML = liste;
 }
 	
@@ -253,7 +241,6 @@ function recupererRecettes(){
     xhr.open('get','recupererRecette',true);
     xhr.onload = function(){recetteList = JSON.parse(this.responseText);};
     xhr.send();
-
     setTimeout(function(){analyseRecettes();}, 100);
 }
 
