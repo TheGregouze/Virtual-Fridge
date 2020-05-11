@@ -3,13 +3,14 @@ Projet de fin d'année 1TL2, cours de "structures et données".
 <br>
 <h2>Objectif:</h2>
 <br>
-Répertorier et faire l’inventaire des aliments et les stocker dans un espace virtuel.
+Faire l’inventaire des aliments et les stocker dans un espace virtuel, et avoir acces a une liste de recettes pouvant être réalisées avec ces aliments.
 <h2>Fonctionnalités principales:</h2>
 <br>
 <ol>
 <li>Ajotuer et retirer des aliments au frigo.</li>
 <li>Vérifier les quantités.</li>
 <li>Montrer une liste de recette qui pourraient être réalisées avec des ingrédients se trouvant dans le frigo.</li>
+<li>Rajouter a la liste des aliments disponible une nouvelle entrée</li>
 </ol>
 <h2>Fonctionnalités secondaires:</h2>
 <br>
