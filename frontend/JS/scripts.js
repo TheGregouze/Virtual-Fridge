@@ -188,6 +188,7 @@ function ajouterFrigo(){
 
 function ajouterProduit(){ 
 	let produit = document.getElementById('ajoutProdForm').nouveauProduit.value;
+	produit.toString();
 	let uniteLib = document.getElementById('ajoutProdForm').unite.value;
 	let unite;
 	let existeDeja = false;
