@@ -2,6 +2,7 @@ CREATE PROCEDURE "DBA"."register" (@username varchar(30), @password varchar(30))
 RESULT (userID int)
 BEGIN
     call sa_set_http_header( 'Content-Type', 'text/html' );
+     call sa_set_http_header('Access-Control-Allow-Origin', '*');
     INSERT INTO tbUsers values
     (DEFAULT, @username, @password);
     SELECT usrID 
