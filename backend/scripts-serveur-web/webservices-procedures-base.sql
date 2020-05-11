@@ -26,19 +26,13 @@ END;
 -- drop procedure http_getPage;
 CREATE PROCEDURE "DBA"."http_getPage"(in url char(255))
 // renvoie le contenu de la page html dont le nom (SANS extension) est le paramètre url
+result(html long varchar)
 BEGIN
 --
-    declare @html content TEXT;
-    call sa_set_http_header('Content-Type', 'text/html; charset=utf-8'); // header http
-    set @html_content = xp_read_file(dba.getPath() || url || '.html');
-    if @html_content is null
-    then select xp_read_file(dba.getPath() || 'index.html') //page par défaut
-    else select @html_content // page si html existant
-    endif
--- 
-END;
-COMMENT ON PROCEDURE "DBA"."http_getPage" IS 'fournisseur de fichier .html (racine du site)';
-
+call sa_set_http_header( 'Content-Type', 'text/html' ); // header http
+select xp_read_file(dba.getPath() || url || '.html'); // renvoyer page
+--
+END
 --
 
 CREATE PROCEDURE "DBA"."http_getJS"(in url char(255))
