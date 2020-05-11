@@ -42,12 +42,12 @@ function getProduits(){
 }
 
 function makeSelect(){ // faire une liste déroulante des produits
-	let liste = '<select>';
+	let liste;
 	for(let i in prodList){
 		liste += '<option value=' + prodList[i].id + '>' + prodList[i].lib + '</option>';
 	}
-	liste += '</select>';
-	document.getElementById("produits").innerHTML += liste;
+
+	document.getElementById("produits").innerHTML = liste;
 }
 
 function resetFrigo(){
