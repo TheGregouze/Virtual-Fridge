@@ -9,7 +9,7 @@ BEGIN
     ELSE 
         BEGIN
             --si oui, on sauvegarde la quantitee precedente et on met a jour le resultat 
-            set quant = (select prodQuant from tbFrigo WHERE usrID = @userId AND prodID = @produits);-
+            set quant = (select prodQuant from tbFrigo WHERE usrID = @userId AND prodID = @produits);
             UPDATE tbFrigo SET usrID = @userID, prodID = @produits, prodQuant = @quantite + quant 
             WHERE usrID = @userId AND prodID = @produits;
         END
