@@ -6,7 +6,7 @@ INSERT INTO tbUnites values
 INSERT INTO tbUsers values
 (default,'Jon', 'key'),
 (default,'user', 'pass'),
-(default,'magnus', 'chive');
+(default,'user2', 'pass');
   
 INSERT INTO tbProduits values
 (1,'oeuf',1),
