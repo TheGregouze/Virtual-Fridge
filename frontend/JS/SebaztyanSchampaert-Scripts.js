@@ -70,7 +70,6 @@ function userListRequest(){ //recuperation de la liste des IDS , psuedos et mot 
 	xhr.onload = function(){
 		userList = JSON.parse(xhr.responseText); 
 		//console.log(userList)
-		return true;
 		};
 	xhr.send();
 }
@@ -102,4 +101,49 @@ function userRegister(name, password){
 	}else{
 		displayErreure('Pseudo non disponible');
 	}	
+}
+
+//--------------------------
+
+
+function comparaisonRecettesFrigo(){
+	let xhr = new XMLHttpRequest();
+
+	xhr.open('get', 'comparaisonRecettesFrigo?userID=' + userID, true)
+	xhr.onload = analyseRecettes;
+	xhr.send();
+}
+
+function analyseRecettes(){ //permet de genere la table des recettes dont des ingrédients son disponible
+	let recettesValides = "<thead><tr><th>Recettes</th><th>Produits</th><th>Quantité</th></tr></thead><tbody></tbody>";
+	recettesValidesList = JSON.parse(this.responseText);
+	//console.log(recettesValidesList);
+
+	for (let i in recettesValidesList){
+		recettesValides += "<tr><td>" +  recettesValidesList[i].recetteLib + "</td><td>" + elementsDeRecetteValide(recettesValidesList[i].recetteLib, "prodLib") + "</td><td>" + elementsDeRecetteValide(recettesValidesList[i].recetteLib, "prodQuant") + "</td></tr>"
+	}
+	//console.log(recettesValides);
+	document.getElementById('tableRecettes').innerHTML = recettesValides;
+}
+
+function elementsDeRecetteValide(recette, colonne){//permet de generer une string pour remplir la table des recettes, les mets en gras si l'élément est possédé par l'utilisateur
+	let liste = "";
+	let strong = false;
+
+	for (let i in recetteList){
+		if(recette == recetteList[i].rctLib){
+
+			for (let x in frigoList){
+				if(recetteList[i].prodLib == frigoList[x].lib){
+					liste += '<strong>' + recetteList[i][colonne] + '</strong>, ';
+					strong = true;
+				}
+			}
+
+			if (!strong){
+				liste += recetteList[i][colonne] + ', ';
+			}
+		}strong = false;
+	}
+	return liste;
 }
