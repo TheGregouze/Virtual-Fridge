@@ -5,7 +5,7 @@ BEGIN
     call sa_set_http_header('Content-Type','application:json; charset=utf-8');
     SELECT prodID, prodLib, unitLib
     FROM tbProduits 
-    NATURAL JOIN tbUnites
+    JOIN tbUnites ON tbProduits.unitID = tbUnites.unitID
 END
 
 CREATE SERVICE "getProduits"
