@@ -1,5 +1,5 @@
 # Virtual-Fridge
-<body>
+<body style="background-image: url(\"frontend/IMG/jath.png\")">
 Projet de fin d'année 1TL2, cours de "structures et données".
 <br>
 <h2>Objectif:</h2>
