@@ -5,8 +5,8 @@ BEGIN
      call sa_set_http_header('Access-Control-Allow-Origin', '*');
     SELECT prodLib, prodQuant, unitLib
     FROM tbFrigo
-    NATURAL JOIN tbProduits
-    NATURAL JOIN tbUnites
+    JOIN tbProduits ON tbFrigo.prodID = tbProduits.prodID
+    JOIN tbUnites ON tbProduits.unitID = tbUnites.unitID
     WHERE usrID = @userID;
 END
 
