@@ -5,8 +5,8 @@ BEGIN
      call sa_set_http_header('Access-Control-Allow-Origin', '*');
     SELECT rctLib, prodLib, prodQuant
     FROM tbRecettesProduits
-    NATURAL JOIN tbRecettes
-    NATURAL JOIN tbProduits
+    JOIN tbRecettes on tbRecettesProduits.rctID = tbRecettes.rctID
+    JOIN tbProduits on tbRecettesProduits.prodID = tbProduits.prodID
 END
 
 CREATE SERVICE "recupererRecette"
