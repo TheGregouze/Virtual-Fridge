@@ -9,7 +9,7 @@ let unitList;//liste des unitees
 let recetteList;//liste des recettes et produit associé.
 let frigoList;//liste des produits et leur quantité dan sle frigo actuel
 
-
+let recettesValidesList;
 //INITIALISATION ET AFFICHAGES
 
 //s'occupe de lancer les eventListeners et fonctions a lancer lors du chargerment
@@ -69,8 +69,7 @@ function userSubHandler(){
 
 	let form = document.getElementById("userID");
 
-	if(form.username.value && form.pswd.value){//si les deux champs ne sont pas remplis, rien ne se passe du coté JS, la page affiche que les champs sont requis
-		userListRequest()	
+	if(form.username.value && form.pswd.value){//si les deux champs ne sont pas remplis, rien ne se passe du coté JS, la page affiche que les champs sont requis	
 		if (form.sub.value == "Login"){
 			//console.log("test login");
 			userLogin(form.username.value, form.pswd.value);
@@ -87,7 +86,6 @@ function userListRequest(){ //recuperation de la liste des IDS , psuedos et mot 
 	xhr.onload = function(){
 		userList = JSON.parse(xhr.responseText); 
 		//console.log(userList)
-		return true;
 		};
 	xhr.send();
 }
@@ -255,52 +253,35 @@ function construireSelectUnite(){
 function recupererRecettes(){
 	let xhr = new XMLHttpRequest();
     xhr.open('get','recupererRecette',true);
-    xhr.onload = analyseRecettes;
+    xhr.onload = function(){
+    	recetteList = JSON.parse(xhr.responseText);
+    	comparaisonRecettesFrigo();
+    }
     xhr.send();
 }
 
+function comparaisonRecettesFrigo(){
+	let xhr = new XMLHttpRequest();
+
+	xhr.open('get', 'comparaisonRecettesFrigo?userID=' + userID, true)
+	xhr.onload = analyseRecettes;
+	xhr.send();
+}
+
 function analyseRecettes(){ //permet de genere la table des recettes dont des ingrédients son disponible
-	let recetteArrayCount = [];//contiendra le nombre de fois qu'un produit necessaire a une recette apparait
-	let recetteArray = [];//contiendra les libellés des recettes
-	let changeRec = "";
 	let recettesValides = "<thead><tr><th>Recettes</th><th>Produits</th><th>Quantité</th></tr></thead><tbody></tbody>";
-	recetteList = JSON.parse(this.responseText)
-	//console.log(this.responseText);
+	recettesValidesList = JSON.parse(this.responseText);
+	//console.log(recettesValidesList);
 
-	for (let i in recetteList){//créé un array de taille X où X est le nombre de recettes
-		if(recetteList[i].rctLib != changeRec){
-			changeRec = recetteList[i].rctLib;//a chaque fois que le libellé de la recette change, on ajoute une entre dans les arrays pertinents
-			recetteArray.push(changeRec);
-			recetteArrayCount.push(0);
-		}
-	}
-
-	for (let i in recetteList){//A chaque entree de la liste des recettes
-		for (let j in frigoList){//on regarde chaque entree de la liste des produits dans le frigo actuel
-			if(frigoList[j].lib == recetteList[i].prodLib){//si un produit requis par une recette se trouve dans le frigo
-				for (let k in recetteArray){//on parcours une liste raccourcie comprenant uniquement le nom de chaque recette
-					if(recetteList[i].rctLib == recetteArray[k]){//jusqu'a ce qu'on trouve celle qui nous interresse
-						recetteArrayCount[k]++;//et dans la table qui compte le nombre de fois qu'un produit requis par la recette appairait dans le frigo, on incrémente a l'index associé avec la recette.
-					}
-				}
-			}
-		}
-	}//ceci permet de voir quels recettes on des produits qui se trouve dans le frigo, et permet d'éventuellement implémenter une manière d'organiser les recettes selon celles avec le plus de nombre de produits necessaire
-
-	//console.log(recetteArray + recetteArrayCount);
-	for (let l = 0; l < recetteArrayCount.length; l++){
-		if (recetteArrayCount[l] > 0){//si la recette contient des produit present dans le frigo
-			//console.log(recetteArray[l]);
-			recettesValides += "<tr><td>" +  recetteArray[l] + "</td><td>" + elementsDeRecetteValide(recetteArray[l], "prodLib") + "</td><td>" + elementsDeRecetteValide(recetteArray[l], "prodQuant") + "</td></tr>"//
-		}
+	for (let i in recettesValidesList){
+		recettesValides += "<tr><td>" +  recettesValidesList[i].recetteLib + "</td><td>" + elementsDeRecetteValide(recettesValidesList[i].recetteLib, "prodLib") + "</td><td>" + elementsDeRecetteValide(recettesValidesList[i].recetteLib, "prodQuant") + "</td></tr>"
 	}
 	//console.log(recettesValides);
 	document.getElementById('tableRecettes').innerHTML = recettesValides;
 }
 
-
 function elementsDeRecetteValide(recette, colonne){//permet de generer une string pour remplir la table des recettes, les mets en gras si l'élément est possédé par l'utilisateur
-	let produits = "";
+	let liste = "";
 	let strong = false;
 
 	for (let i in recetteList){
@@ -308,16 +289,17 @@ function elementsDeRecetteValide(recette, colonne){//permet de generer une strin
 
 			for (let x in frigoList){
 				if(recetteList[i].prodLib == frigoList[x].lib){
-					produits += '<strong>' + recetteList[i][colonne] + '</strong>, ';
+					liste += '<strong>' + recetteList[i][colonne] + '</strong>, ';
 					strong = true;
 				}
 			}
+
 			if (!strong){
-				produits += recetteList[i][colonne] + ', ';
+				liste += recetteList[i][colonne] + ', ';
 			}
 		}strong = false;
 	}
-	return produits;
+	return liste;
 }
 
 //recuperer la liste des produits sur le serveur
