@@ -6,6 +6,55 @@ let unitList;//liste des unitees
 let recetteList;//
 let frigoList;
 
+//masque la selection des produit avant connexion, et le formulaire du login après connexion
+function displayFormProd(){
+	document.getElementById("main").style.display = "inline-block";
+	document.getElementById("userID").style.display = "none";
+}
+
+function displayErreure(erreure){
+	let erreureDiv = document.getElementById('erreure');
+	if (erreure == 'ok'){
+		erreureDiv.style.display = 'none';
+	}else{
+		erreureDiv.style.display = 'inline-block';
+		erreureDiv.innerHTML = "Erreure : " + erreure;
+	}
+}
+
+function getProduits(){
+	let xhr = new XMLHttpRequest(); // instancier XMLHttpRequest
+
+	xhr.open('get', "getProduits", true); // préparer
+	xhr.onload = // callback : fonction anonyme
+			function(){ prodList = JSON.parse(xhr.responseText);
+			makeSelect();		 
+	}
+	xhr.send(); // envoyer
+}
+
+function trierListe(attribut) {    
+    return function(a, b) {    
+        if (a[attribut] > b[attribut]) {    
+            return 1;    
+        } else if (a[attribut] < b[attribut]) {    
+            return -1;
+        }    
+        return 0;    
+    }    
+}    
+
+function makeSelect(){ // faire une liste déroulante des produits
+	let liste;
+	prodList.sort(trierListe('lib'));
+	for(let i in prodList){
+		liste += '<option value=' + prodList[i].id + '>' + prodList[i].lib + '</option>';
+	}
+
+	document.getElementById("produits").innerHTML = liste;
+}
+
+
 //s'occupe de lancer les eventListeners et fonctions a lancer lors du chargerment
 window.onload = function(){
 	let loginChange = document.getElementById("loginRegister");
@@ -23,40 +72,26 @@ window.onload = function(){
 	userListRequest();
 	getProduits();
 	recupererUnite();
+	
 }
 
-//masque la selection des produit avant connexion, et le formulaire du login après connexion
-function displayFormProd(){
-	document.getElementById("main").style.display = "inline-block";
-	document.getElementById("userID").style.display = "none";
-}
-
-function getProduits(){
-	let xhr = new XMLHttpRequest(); // instancier XMLHttpRequest
-
-	xhr.open('get', "getProduits", true); // préparer
-	xhr.onload = // callback : fonction anonyme
-		function(){ prodList = JSON.parse(xhr.responseText);makeSelect();		 
-	}
-	xhr.send(); // envoyer
-}
-
-function makeSelect(){ // faire une liste déroulante des produits
-	let liste;
-	for(let i in prodList){
-		liste += '<option value=' + prodList[i].id + '>' + prodList[i].lib + '</option>';
-	}
-
-	document.getElementById("produits").innerHTML = liste;
+function suppressionLigne(){
+	document.getElementById("frigo").deleteRow(-1);
 }
 
 function resetFrigo(){
-	document.getElementById("frigo").innerHTML = "<tr><th>Produit</th><th>Quantité</th></tr>";
-	let url = 'resetFrigo?userID=' + userID;
+	//document.getElementById("frigo").innerHTML = "<tr><th>Produit</th><th>Quantité</th></tr>";
+
+	let url = 'resetFrigo?userID=' + userID;//efface le frigo
 	let xhr = new XMLHttpRequest();
 	xhr.open('get', url, true);
+	xhr.onload = function(){
+		recupererRecettes();//rafraichir la liste des recettes
+		recupererFrigo();//rafraichir le frigo
+	}
 	xhr.send();
-	recupererRecettes();
+	frigoList = [];//vide le frigo coté client
+	displayErreure('ok');
 }
 
 //permet d'avoir une distinction entre une tentative de création de compte et d'une connexion a un compte
@@ -71,17 +106,19 @@ function changeLogin(){
 
 //dirige les infos vers la fonction adéquate
 function userSubHandler(){
+
 	let form = document.getElementById("userID");
 
 	if(form.username.value && form.pswd.value){//si les deux champs ne sont pas remplis, rien ne se passe du coté JS, la page affiche que les champs sont requis
-		userListRequest();
+		userListRequest()	
 		if (form.sub.value == "Login"){
 			//console.log("test login");
-			setTimeout(function(){userLogin(form.username.value, form.pswd.value);}, 100);//necessaire car sinon la requete est plus lente que la tentative de recuperation des donnes
+			userLogin(form.username.value, form.pswd.value);
 		}else if(form.sub.value == "Register"){
 			//console.log("test Register");
 			userRegister(form.username.value, form.pswd.value);
 		}
+		
 	}
 }
 
@@ -91,11 +128,13 @@ function userListRequest(){ //recuperation de la liste des IDS , psuedos et mot 
 	xhr.onload = function(){
 		userList = JSON.parse(xhr.responseText); 
 		//console.log(userList)
+		return true;
 		};
 	xhr.send();
 }
 
 function userExiste(name){//retourne faux si l'utilisateur n'existe pas, vrai sinon
+
 	for(let i in userList){
 		//console.log(userList[i].username);
 		if(userList[i].username == name){
@@ -114,15 +153,14 @@ function userLogin(name, password){
 			}
 		}
 		if(userList[uIndex].pswd == password){//test si le mot de passe est valide	
-			console.log("Connection!");
+			//console.log("Connection!");
 			getUserID(name);
-			displayFormProd();
-			setTimeout(function(){recupererFrigo();recupererRecettes();},100);//idem que le precedent
+			displayErreure('ok');
 		}else{
-			console.log("Mauvais mot de passe");
+			displayErreure("Mauvais mot de passe");
 		}
 	}else{
-		console.log("compte introuvable");
+		displayErreure("Compte introuvable");
 	}
 }
 
@@ -130,7 +168,12 @@ function getUserID(name){
 	let xhr = new XMLHttpRequest();
 	let url = 'getUserID?username=' + name;
 	xhr.open('get', url, true);
-	xhr.onload = function(){userID = xhr.responseText; console.log("votre id est = " + xhr.responseText) };
+	xhr.onload = function(){
+			userID = xhr.responseText; 
+			//console.log("votre id est = " + xhr.responseText); 
+			displayFormProd();
+			recupererFrigo();
+			};
 	xhr.send();
 }
 
@@ -143,12 +186,15 @@ function userRegister(name, password){
 		xhr.onload = function(){
 			userID = xhr.responseText;
 			displayFormProd();
+			userListRequest();
 		}
 		xhr.send();
+		displayErreure('ok');
 	}else{
-		console.log('non disponible');
+		displayErreure('Pseudo non disponible');
 	}
-	userListRequest();
+
+	
 }
 
 function recupererFrigo(){
@@ -156,12 +202,13 @@ function recupererFrigo(){
 	let url = 'recupererFrigo?userID=' + userID;
 
 	xhr.open("get", url, true);
-	xhr.onload = function(){construireTableFrigo(xhr)};
+	xhr.onload = construireTableFrigo;
 	xhr.send();
 }
 
-function construireTableFrigo(xhr){
-	frigoList = JSON.parse(xhr.responseText);
+function construireTableFrigo(){
+	//console.log(this.responseText);
+	frigoList = JSON.parse(this.responseText);
 	let tableFrigo = "";
 	//console.log(frigoList);
 	for(let i in frigoList){
@@ -170,35 +217,36 @@ function construireTableFrigo(xhr){
 
 	document.getElementById('frigo').innerHTML = "<tr><thead><strong>Votre frigo :</strong></thead></tr><tr><th>Produit</th><th>Quantité</th><th></th></tr>"
 	document.getElementById('frigo').innerHTML += tableFrigo;
+	recupererRecettes(this);
 }
 
 function ajouterFrigo(){
 	let form = document.getElementById("formProd");
 
-	if (form.quant.value && form.produits.value){ //verifie que les champs ne sont pas vides
+	if (form.quant.value && form.produits.value){
 		let url = "ajouterFrigo?produits=" + form.produits.value + "&quantite=" + form.quant.value + "&userID=" + userID;
 		//formation de l'url a partir du produit, sa quantite, et le user ID
-		let xhr = new XMLHttpRequest(); 
-		xhr.open('get', url, true); 
-		xhr.onload = function(){};
-		xhr.send(); 
-		setTimeout(function(){recupererFrigo();recupererRecettes();},100);
+		let xhr = new XMLHttpRequest(); // instancier XMLHttpRequest
+		xhr.open('get', url, true); // préparer
+		xhr.onload = recupererFrigo;
+			
+		xhr.send(); // envoyer
     }
 }
 
 function ajouterProduit(){ 
-	let produit = document.getElementById('ajoutProdForm').nouveauProduit.value;
-	produit.toString();
+	let produit = document.getElementById('ajoutProdForm').nouveauProduit.value.toString().toLowerCase();
 	let uniteLib = document.getElementById('ajoutProdForm').unite.value;
 	let unite;
 	let existeDeja = false;
 
-	for (let i in unitList) {
+	for (let i in unitList) {//trouve l'ID de l'unité
 		if(unitList[i].unitLib == uniteLib){
 			unite = unitList[i].unitID;
 		}
 	}
-	for (let i in prodList){
+
+	for (let i in prodList){//verifie si le produit existe deja
 		if (prodList[i].lib== produit) {
 			existeDeja = true;
 		}
@@ -206,33 +254,34 @@ function ajouterProduit(){
 
 	if (produit && !existeDeja){//s'assure que le champ n'est pas vide et que un tel produit n'exist pas deja
 		let url = "ajouterProduit?produit=" + produit+ "&unite=" + unite;
-    		let xhr = new XMLHttpRequest();
+    	let xhr = new XMLHttpRequest();
    		
    	 	xhr.open('get', url, true);
-    		xhr.onload = function(){
+    	xhr.onload = function(){
         	getProduits();
-        	makeSelect()
-       	 	};
-    		xhr.send();
-    	}else{
-    		console.log('produit deja existant');
+        	makeSelect();
+        	displayErreure('ok');
+        };
+    	xhr.send();
+    }else{
+    	displayErreure('produit deja existant');
     }
 }
 
 function recupererUnite(){
 	let xhr = new XMLHttpRequest();
 
-    	xhr.open('get','recupererUnite',true);
-    	xhr.onload = construireSelectUnite;
-    	xhr.send();
+    xhr.open('get','recupererUnite',true);
+    xhr.onload = construireSelectUnite;
+    xhr.send();
 }
 
 function construireSelectUnite(){
 	unitList = JSON.parse(this.responseText);
 	let liste='';
 	for (let i of unitList) {
-        	liste += "<option value='"+i.unitLib+"'>"+ i.unitLib +"</option>";
-    	}
+         liste += "<option value='"+i.unitLib+"'>"+ i.unitLib +"</option>";
+    }
 	document.getElementById('unite').innerHTML = liste;
 }
 	
@@ -240,9 +289,8 @@ function construireSelectUnite(){
 function recupererRecettes(){
 	let xhr = new XMLHttpRequest();
     xhr.open('get','recupererRecette',true);
-    xhr.onload = function(){recetteList = JSON.parse(this.responseText);};
+    xhr.onload = analyseRecettes;
     xhr.send();
-    setTimeout(function(){analyseRecettes();}, 100);
 }
 
 function analyseRecettes(){ //permet de genere la table des recettes dont des ingrédients son disponible
@@ -251,6 +299,8 @@ function analyseRecettes(){ //permet de genere la table des recettes dont des in
 	let recetteArray = []
 	let changeRec = "";
 	let recettesValides = "<thead><tr><th>Recettes</th><th>Produits</th><th>Quantité</th></tr></thead><tbody></tbody>";
+	recetteList = JSON.parse(this.responseText)
+	//console.log(this.responseText);
 
 	for (let i in recetteList){
 		if(recetteList[i].rctLib != changeRec){

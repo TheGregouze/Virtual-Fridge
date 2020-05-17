@@ -1,20 +1,25 @@
-body{
+*{
 	color: #660066;
 	text-align: center;
+	font-family: "Lucida Console", Monaco, monospace;
 }
+img{
+	display: inline-block;
+}
+
 
 button{
 	margin:1em;
 	padding: 4px;
 	background-color: #d896ff;
-  	border: none;
+  	border: 2px solid #660066;
  	padding: 8px 8px;
-   	text-align: center;
-    	text-decoration: none;
-   	display: inline-block;
-    	font-size: 16px;
-    	margin: 4px 2px;
-   	cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
 }
 
 html{
@@ -28,9 +33,11 @@ form{
 	padding : 1em;
 }
 
+
 table, th, td{
 	border: 1px solid black;
 	border-collapse: collapse;
+
 }
 
 #main{
@@ -44,17 +51,16 @@ table, th, td{
 }
 
 #tableRecettes{
+
 	width: auto;
-}
 
-#disclaimer {
-  position: fixed;
-  left: 0;
-  bottom: 0;
-  width: 100%;
-  background-color: #efbbff;
 }
-
-button {
-	display: flex;
+#erreure {
+	display: none;
+	border : 1px solid black;	
+	background-color: #efbbff;
+	padding:4px;
+	position: fixed;
+	left:0%;
+  	top:0%;
 }
