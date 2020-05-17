@@ -1,5 +1,5 @@
 # Virtual-Fridge
-<body style="background-image: url('frontend/IMG/jath.png');">
+
 Projet de fin d'année 1TL2, cours de "structures et données".
 <br>
 <h2>Objectif:</h2>
@@ -55,5 +55,3 @@ INPUT @username varchar(30), @password varchar(30). RESULT userID int. Insere un
 INPUT @userID int. Supprime les données du frigo du user par un DELETE FROM tbFrigo. Ne renvoie rien.
 <h3>ajouterFrigo :</h3>
 INPUT @produits int, @quantite int, @userID int. Ajoute une colonne à la table des frigos et la met à jour si elle existe déjà au moyen d’un UPDATE. Contient un conditionnel et fait appel à la fonction testFrigo.  Ne renvoie rien.
-
-</body>
