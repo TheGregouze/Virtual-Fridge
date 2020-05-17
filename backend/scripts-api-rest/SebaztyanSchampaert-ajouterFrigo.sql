@@ -19,4 +19,4 @@ CREATE SERVICE "ajouterFrigo"
     USER "DBA"
     URL ON
     METHODS 'GET'
-AS call dba.ajouterFrigo(:produits, :quantite, :userID)
+AS call dba.ajouterFrigo(:produit, :quantite, :userID)
