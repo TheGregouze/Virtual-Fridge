@@ -1,12 +1,12 @@
 function ajouterProduit(){ 
 	let produit = document.getElementById('ajoutProdForm').nouveauProduit.value.toString().toLowerCase();
 	let uniteLib = document.getElementById('ajoutProdForm').unite.value;
-	let unite;
+	let uniteID; //id de l'unité pertinente
 	let existeDeja = false;
 
 	for (let i in unitList) {//trouve l'ID de l'unité
 		if(unitList[i].unitLib == uniteLib){
-			unite = unitList[i].unitID;
+			uniteID = unitList[i].unitID;
 		}
 	}
 
@@ -17,7 +17,7 @@ function ajouterProduit(){
 	}
 
 	if (produit && !existeDeja){//s'assure que le champ n'est pas vide et que un tel produit n'exist pas deja
-		let url = "ajouterProduit?produit=" + produit+ "&unite=" + unite;
+		let url = "ajouterProduit?produit=" + produit+ "&unite=" + uniteID;
     	let xhr = new XMLHttpRequest();
    		
    	 	xhr.open('get', url, true);

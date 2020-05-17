@@ -50,7 +50,6 @@ function changeLogin(){
 
 //dirige les infos vers la fonction adéquate
 function userSubHandler(){
-
 	let form = document.getElementById("userID");
 
 	if(form.username.value && form.pswd.value){//si les deux champs ne sont pas remplis, rien ne se passe du coté JS, la page affiche que les champs sont requis
@@ -85,39 +84,6 @@ function userExiste(name){//retourne faux si l'utilisateur n'existe pas, vrai si
 		}
 	}
 	return false;
-}
-
-function userLogin(name, password){
-	if (userExiste(name)){
-		let uIndex;
-		for (let i in userList){
-			if(userList[i].username == name){
-				uIndex = i;
-			}
-		}
-		if(userList[uIndex].pswd == password){//test si le mot de passe est valide	
-			//console.log("Connection!");
-			getUserID(name);
-			displayErreure('ok');
-		}else{
-			displayErreure("Mauvais mot de passe");
-		}
-	}else{
-		displayErreure("Compte introuvable");
-	}
-}
-
-function getUserID(name){
-	let xhr = new XMLHttpRequest();
-	let url = 'getUserID?username=' + name;
-	xhr.open('get', url, true);
-	xhr.onload = function(){
-			userID = xhr.responseText; 
-			//console.log("votre id est = " + xhr.responseText); 
-			displayFormProd();
-			recupererFrigo();
-			};
-	xhr.send();
 }
 
 function userRegister(name, password){
