@@ -15,4 +15,4 @@ AUTHORIZATION OFF
     USER "DBA"
     URL ON
     METHODS 'GET'
-AS call DBA.recupererRecette()
+AS call DBA.NombreProduit()
