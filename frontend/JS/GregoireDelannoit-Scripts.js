@@ -24,6 +24,7 @@ function ajouterProduit(){
     	xhr.onload = function(){
         	getProduits();//reinitialise la liste des produits en accord avec les données du serveur
         	makeSelect();//reconstruit le select pour l'avoir a jour
+		compteProduit();//maj du compteur de produit
         	displayErreure('ok');//se débarasse des potentiels messages d'erreures.
         };
     	xhr.send();
