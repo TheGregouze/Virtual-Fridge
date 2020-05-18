@@ -1,3 +1,5 @@
+/* **Systeme d'ajout au frigo** */
+
 function ajouterFrigo(){
 	let form = document.getElementById("formProd");
 
@@ -36,7 +38,7 @@ function construireTableFrigo(){//construir la table des produits dans le frigo 
 	recupererRecettes();//permet de rafraichir la table des recettes en allant 
 }
 
-//-------------------
+/* **Systeme de register** */
 
 //permet d'avoir une distinction entre une tentative de création de compte et d'une connexion a un compte
 function changeLogin(){
@@ -103,7 +105,7 @@ function userRegister(name, password){
 	}	
 }
 
-//--------------------------
+/* **Systeme de recette possibles** */
 
 
 function comparaisonRecettesFrigo(){
