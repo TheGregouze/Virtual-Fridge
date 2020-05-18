@@ -28,6 +28,7 @@ window.onload = function(){
 	userListRequest();
 	getProduits();
 	recupererUnite();
+	compteProduit();
 }
 
 //masque la selection des produit avant connexion, et le formulaire du login après connexion
