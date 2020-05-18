@@ -1,11 +1,10 @@
 CREATE PROCEDURE "DBA"."NombreProduit"()
-
+RESULT (nbr int)
 BEGIN
-	call sa_set_http_header('Content-Type','application:json; charset=utf-8');
-    
+    call sa_set_http_header('Content-Type','application:json; charset=utf-8');
     SELECT count(*) as nbr
     FROM tbProduits
-    
+
 END
 
 
