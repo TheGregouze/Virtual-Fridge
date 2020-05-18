@@ -5,18 +5,18 @@ function recupererRecettes(){
     xhr.send();
 }
 -----------------
-	
-	
-function recupProduit() {
-	let xhr = new XMLHttpRequest();
 
-	xhr.open('get', "NombreProduit", true);
-	xhr.onload = traitement;
-	xhr.send();
+function compteProduit() {
+    let xhrCompteur= new XMLHttpRequest();
+
+    xhrCompteur.open('get', "NombreProduit", true);
+    xhrCompteur.onload = traitementCompteur;
+    xhrCompteur.send();
 }
 
-function traitement() {
-	let reponse = JSON.parse(this.response)
-	let nombre = reponse[0].nbr;
-	document.getElementById('nombreP').innerHTML = "un des "+ nombre + " produits";
+function traitementCompteur() {
+    console.log(JSON.parse(this.responseText));
+    let nombre = JSON.parse(this.responseText)[0].nbr;
+    console.log(nombre + typeof(nombre));
+    document.getElementById('compteProduit').innerHTML = nombre + " produits";
 }
